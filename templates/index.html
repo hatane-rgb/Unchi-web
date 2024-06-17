@@ -1,10 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Unchi - Global text community.</title>
 </head>
 <body>
+    <header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Unchi</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">ホーム</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'timeline_view' %}">タイムライン</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">アカウント</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="nav-link btn btn-link">ログアウト</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">ログイン</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'signup' %}">サインアップ</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+               </div>
+            </div>
+        </nav>
+    </header>
+    <div id="Login" class="text-center" style="background-image: url('https://illust55.com/wp-content/uploads/2021/04/210417-%E5%AE%87%E5%AE%99%E7%A9%BA%E9%96%93%E3%82%B5%E3%83%A0%E3%83%8D%E3%82%A4%E3%83%AB%E8%B5%A4-800x450.png'); background-size: cover; background-repeat: no-repeat;">
+        <br>
+    <h1 class="fw-bold text-white" style="font-family: Ubuntu, 'Noto Sans JP', sans-serif;">Unchiへようこそ</h1>
+        <br>
+        <div class="container bg-white" style="border-radius: 5px; margin: 0 auto; padding: 10px; width: 50vw; display: inline-block">
 
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        {% if user.is_authenticated %}
+            <h2 class="text-center">ようこそ</h2>
+        {% else %}
+            <h2 class="text-center">ログイン</h2>
+            <form method="post" action="/myapp/login/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">ユーザー名</label>
+                    <input name="username" type="text" class="form-control" id="username" placeholder="ユーザー名を入力">
+                </div>
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input name="password" type="password" class="form-control" id="password" placeholder="パスワードを入力">
+                    <br>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">ログイン</button>
+            </form>
+        {% endif %}
+        {% if user.is_authenticated %}
+    <p>こんにちは、{{ user.username }}さん</p>
+{% endif %}
+    </div>
+</div>
+    </div>
+    <br>
+    <br>
+    
+
+</div>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Unchiとは</h2>
+                <p>hatane_230が勉強用に開発した、Djangoフレームワークを使用した簡易的なSNSプラットフォームです。</p>
+            </div>
+            <div class="col-md-4">
+                <h2>Unchiの使い方</h2>
+                <p>まずヘッダーの「閲覧」からタイムラインを除いてみましょう！「投稿」では自分の出来事を共有できます。</p>
+            </div>
+            <div class="col-md-4">
+                <h2>Unchiの特徴</h2>
+                <p>軽量でサーバーに係る負担が少なく、自宅サーバーなどにも適しています。</p>
+            </div>
+        </div>
+    </div>
+<div class="container">
+    <h2>最新の投稿</h2>
+    {% for post in latest_posts %}
+        <div class="card mb-4 bg-light">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.author.username }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text"><small class="text-muted">{{ post.created_at }}</small></p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+                    
 </body>
 </html>
+
+
