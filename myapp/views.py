@@ -7,6 +7,7 @@ from .models import Post
 
 def index(request):
     latest_posts = Post.objects.order_by('-created_at')[:5]
+    print(latest_posts)  # Add this line
     return render(request, 'index.html', {'latest_posts': latest_posts})
 def timeline_view(request):
     if request.method == 'POST':

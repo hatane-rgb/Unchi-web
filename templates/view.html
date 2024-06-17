@@ -27,6 +27,13 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    transition: all 0.3ms ease; /* Add transition */
+    opacity: 0; /* Start with the content invisible */
+}
+
+/* When the modal is displayed, make the content visible */
+.modal.display-block .modal-content {
+    opacity: 1;
 }
 </style>
 </head>
@@ -34,14 +41,14 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Unchi</a>
+                <a class="navbar-brand" href="{% url 'index' %}">Unchi</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{%  url 'index_template' %}">ホーム</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">ホーム</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'timeline_view' %}">タイムライン</a>
@@ -112,21 +119,25 @@
         var span = document.getElementsByClassName("close")[0];
 
         // When the user clicks the button, open the modal
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+    modal.classList.add('display-block'); // Add the new class
+}
 
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+    modal.classList.remove('display-block'); // Remove the new class
+}
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+        modal.classList.remove('display-block'); // Remove the new class
+    }
+}
     </script>
 </body>
 </html>
